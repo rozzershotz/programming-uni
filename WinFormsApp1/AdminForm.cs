@@ -15,6 +15,8 @@ namespace WinFormsApp1
             new Form1().Show();
             this.Hide();
         }
+
+        
     }
 }
 
