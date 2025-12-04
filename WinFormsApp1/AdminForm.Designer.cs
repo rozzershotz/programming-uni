@@ -1,11 +1,29 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
+using System.Data;
 
 namespace WinFormsApp1
 {
     partial class AdminForm
     {
+        string connectionString = "server=localhost;user=root;password=3PYYWCCE;database=xenstathatos_clientDB";
+        private void TestConnection()
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    MessageBox.Show("Connection successful!");
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show("Error connecting to database: " + ex.Message);
+                }
+            }
+        }
         private System.ComponentModel.IContainer components = null;
         private Button btnBack;
         private Label labelTitle;
@@ -28,6 +46,7 @@ namespace WinFormsApp1
             lblClientAddress = new Label();
             lblClientPhone = new Label();
             btnAddClient = new Button();
+            btnEditClient = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvClients).BeginInit();
             SuspendLayout();
             // 
@@ -163,9 +182,19 @@ namespace WinFormsApp1
             btnAddClient.UseVisualStyleBackColor = true;
             btnAddClient.Click += btnAddClient_Click;
             // 
+            // btnEditClient
+            // 
+            btnEditClient.Location = new Point(319, 234);
+            btnEditClient.Name = "btnEditClient";
+            btnEditClient.Size = new Size(112, 34);
+            btnEditClient.TabIndex = 14;
+            btnEditClient.Text = "Edit Client";
+            btnEditClient.UseVisualStyleBackColor = true;
+            // 
             // AdminForm
             // 
             ClientSize = new Size(1023, 431);
+            Controls.Add(btnEditClient);
             Controls.Add(btnAddClient);
             Controls.Add(lblClientPhone);
             Controls.Add(lblClientAddress);
@@ -211,5 +240,6 @@ namespace WinFormsApp1
         private Label lblClientAddress;
         private Label lblClientPhone;
         private Button btnAddClient;
+        private Button btnEditClient;
     }
 }
