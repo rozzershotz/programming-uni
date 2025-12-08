@@ -53,6 +53,23 @@ namespace WinFormsApp1
 
             }
         }
+        private void btnEditClient_Click(object sender, EventArgs e)
+        {
+            if (dgvClients.SelectedRows.Count > 0)
+            {
+                int selectedIndex = dgvClients.SelectedRows[0].Index;
+                clients[selectedIndex].ClientID = txtClientID.Text;
+                clients[selectedIndex].ClientName = txtClientName.Text;
+                clients[selectedIndex].ClientAddress = txtClientAddress.Text;
+                clients[selectedIndex].ClientPhone = txtClientPhone.Text;
+                LoadGrid();
+                MessageBox.Show("Client record updated successfully!");
+            }
+            else
+            {
+                MessageBox.Show("Please select a client record to edit.");
+            }
+        }
     }
 }
 
