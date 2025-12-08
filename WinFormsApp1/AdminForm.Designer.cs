@@ -8,22 +8,7 @@ namespace WinFormsApp1
 {
     partial class AdminForm
     {
-        string connectionString = "server=localhost;user=root;password=3PYYWCCE;database=xenstathatos_clientDB";
-        private void TestConnection()
-        {
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                try
-                {
-                    connection.Open();
-                    MessageBox.Show("Connection successful!");
-                }
-                catch (MySqlException ex)
-                {
-                    MessageBox.Show("Error connecting to database: " + ex.Message);
-                }
-            }
-        }
+        
         private System.ComponentModel.IContainer components = null;
         private Button btnBack;
         private Label labelTitle;
@@ -47,6 +32,7 @@ namespace WinFormsApp1
             lblClientPhone = new Label();
             btnAddClient = new Button();
             btnEditClient = new Button();
+            btnDeleteClient = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvClients).BeginInit();
             SuspendLayout();
             // 
@@ -82,6 +68,7 @@ namespace WinFormsApp1
             // 
             // ClientID
             // 
+            ClientID.DataPropertyName = "ClientID";
             ClientID.HeaderText = "ClientID";
             ClientID.MinimumWidth = 8;
             ClientID.Name = "ClientID";
@@ -89,6 +76,7 @@ namespace WinFormsApp1
             // 
             // ClientName
             // 
+            ClientName.DataPropertyName = "ClientName";
             ClientName.HeaderText = "ClientName";
             ClientName.MinimumWidth = 8;
             ClientName.Name = "ClientName";
@@ -96,6 +84,7 @@ namespace WinFormsApp1
             // 
             // ClientAddress
             // 
+            ClientAddress.DataPropertyName = "ClientAddress";
             ClientAddress.HeaderText = "ClientAddress";
             ClientAddress.MinimumWidth = 8;
             ClientAddress.Name = "ClientAddress";
@@ -103,6 +92,7 @@ namespace WinFormsApp1
             // 
             // ClientPhone
             // 
+            ClientPhone.DataPropertyName = "ClientPhone";
             ClientPhone.HeaderText = "ClientPhone";
             ClientPhone.MinimumWidth = 8;
             ClientPhone.Name = "ClientPhone";
@@ -184,16 +174,26 @@ namespace WinFormsApp1
             // 
             // btnEditClient
             // 
-            btnEditClient.Location = new Point(319, 234);
+            btnEditClient.Location = new Point(309, 234);
             btnEditClient.Name = "btnEditClient";
             btnEditClient.Size = new Size(112, 34);
             btnEditClient.TabIndex = 14;
             btnEditClient.Text = "Edit Client";
             btnEditClient.UseVisualStyleBackColor = true;
             // 
+            // btnDeleteClient
+            // 
+            btnDeleteClient.Location = new Point(439, 234);
+            btnDeleteClient.Name = "btnDeleteClient";
+            btnDeleteClient.Size = new Size(145, 34);
+            btnDeleteClient.TabIndex = 15;
+            btnDeleteClient.Text = "Delete Client";
+            btnDeleteClient.UseVisualStyleBackColor = true;
+            // 
             // AdminForm
             // 
             ClientSize = new Size(1023, 431);
+            Controls.Add(btnDeleteClient);
             Controls.Add(btnEditClient);
             Controls.Add(btnAddClient);
             Controls.Add(lblClientPhone);
@@ -241,5 +241,6 @@ namespace WinFormsApp1
         private Label lblClientPhone;
         private Button btnAddClient;
         private Button btnEditClient;
+        private Button btnDeleteClient;
     }
 }

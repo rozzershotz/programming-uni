@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WinFormsApp1
 {
-    internal class Client
+    public class Client
     {
         public string ClientID { get; set; }
         public string ClientName { get; set; }
