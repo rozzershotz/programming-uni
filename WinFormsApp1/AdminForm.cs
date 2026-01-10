@@ -115,7 +115,7 @@ namespace WinFormsApp1
                 ClientPhone = txtClientPhone.Text
             };
 
-            clients.Add(client);
+            
 
             clients.Add(client);
             SaveClientsToFile(); // save after adding

@@ -39,6 +39,8 @@ namespace WinFormsApp1
             btnAddClient = new Button();
             btnEditClient = new Button();
             btnDeleteClient = new Button();
+            txtSearch = new TextBox();
+            btnSearch = new Button();
             ((ISupportInitialize)dgvClients).BeginInit();
             SuspendLayout();
             // 
@@ -142,28 +144,45 @@ namespace WinFormsApp1
             // 
             // btnEditClient
             // 
-            btnEditClient = new Button();
-            btnEditClient.Location = new System.Drawing.Point(320, 235);
-            btnEditClient.Size = new System.Drawing.Size(112, 34);
+            btnEditClient.Location = new Point(320, 235);
+            btnEditClient.Name = "btnEditClient";
+            btnEditClient.Size = new Size(112, 34);
+            btnEditClient.TabIndex = 0;
             btnEditClient.Text = "Edit Client";
             btnEditClient.UseVisualStyleBackColor = true;
             btnEditClient.Click += btnEditClient_Click;
-            Controls.Add(btnEditClient);
-
             // 
             // btnDeleteClient
             // 
-            btnDeleteClient = new Button();
-            btnDeleteClient.Location = new System.Drawing.Point(450, 235);
-            btnDeleteClient.Size = new System.Drawing.Size(112, 34);
+            btnDeleteClient.Location = new Point(450, 235);
+            btnDeleteClient.Name = "btnDeleteClient";
+            btnDeleteClient.Size = new Size(150, 34);
+            btnDeleteClient.TabIndex = 1;
             btnDeleteClient.Text = "Delete Client";
             btnDeleteClient.UseVisualStyleBackColor = true;
             btnDeleteClient.Click += btnDeleteClient_Click;
-            Controls.Add(btnDeleteClient);
+            // 
+            // txtSearch
+            // 
+            txtSearch.Location = new Point(682, 187);
+            txtSearch.Name = "txtSearch";
+            txtSearch.Size = new Size(150, 31);
+            txtSearch.TabIndex = 9;
+            // 
+            // btnSearch
+            // 
+            btnSearch.Location = new Point(720, 234);
+            btnSearch.Name = "btnSearch";
+            btnSearch.Size = new Size(112, 34);
+            btnSearch.TabIndex = 10;
+            btnSearch.Text = "Search";
+            btnSearch.UseVisualStyleBackColor = true;
             // 
             // AdminForm
             // 
             ClientSize = new Size(1023, 431);
+            Controls.Add(btnSearch);
+            Controls.Add(txtSearch);
             Controls.Add(btnDeleteClient);
             Controls.Add(btnEditClient);
             Controls.Add(btnAddClient);
@@ -193,7 +212,8 @@ namespace WinFormsApp1
             }
             base.Dispose(disposing);
         }
-        
+        private TextBox txtSearch;
+        private Button btnSearch;
     }
 
 }
