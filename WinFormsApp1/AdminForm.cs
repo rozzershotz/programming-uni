@@ -29,7 +29,9 @@ namespace WinFormsApp1
             dgvClients.DataSource = clients;
         }
 
-        private string dataFile = "clients.json"; // file in app folder
+        private string dataFile = Path.Combine(
+    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+    "clients.json"); // file in app folder
 
         // Save clients to JSON
         private void SaveClientsToFile()
@@ -144,6 +146,8 @@ namespace WinFormsApp1
             txtClientPhone.Clear();
             txtClientID.Focus();
         }
+
+        
     }
 }
 

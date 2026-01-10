@@ -35,68 +35,110 @@ namespace WinFormsApp1
             lblClientAddress = new Label();
             lblClientPhone = new Label();
             btnAddClient = new Button();
-
-            ((System.ComponentModel.ISupportInitialize)dgvClients).BeginInit();
+            ((ISupportInitialize)dgvClients).BeginInit();
             SuspendLayout();
-
+            // 
             // btnBack
-            btnBack.Location = new Point(10, 388);
+            // 
+            btnBack.Location = new Point(0, 403);
             btnBack.Name = "btnBack";
             btnBack.Size = new Size(75, 31);
             btnBack.TabIndex = 1;
             btnBack.Text = "Back";
             btnBack.UseVisualStyleBackColor = true;
             btnBack.Click += btnBack_Click;
-
+            // 
             // labelTitle
+            // 
             labelTitle.AutoSize = true;
             labelTitle.Location = new Point(10, 10);
             labelTitle.Name = "labelTitle";
             labelTitle.Size = new Size(65, 25);
             labelTitle.TabIndex = 0;
             labelTitle.Text = "Admin";
-
+            // 
             // dgvClients
+            // 
             dgvClients.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvClients.Location = new Point(10, 287);
             dgvClients.Name = "dgvClients";
             dgvClients.RowHeadersWidth = 62;
-            dgvClients.Size = new Size(664, 95);
+            dgvClients.Size = new Size(761, 110);
             dgvClients.TabIndex = 4;
-
-            // Textboxes and labels (layout)
-            txtClientID.Location = new Point(12, 61);
-            txtClientID.Size = new Size(150, 31);
-
-            txtClientName.Location = new Point(12, 117);
-            txtClientName.Size = new Size(150, 31);
-
+            // 
+            // txtClientAddress
+            // 
             txtClientAddress.Location = new Point(12, 175);
+            txtClientAddress.Name = "txtClientAddress";
             txtClientAddress.Size = new Size(150, 31);
-
+            txtClientAddress.TabIndex = 8;
+            // 
+            // txtClientID
+            // 
+            txtClientID.Location = new Point(12, 61);
+            txtClientID.Name = "txtClientID";
+            txtClientID.Size = new Size(150, 31);
+            txtClientID.TabIndex = 7;
+            
+            // 
+            // txtClientName
+            // 
+            txtClientName.Location = new Point(12, 117);
+            txtClientName.Name = "txtClientName";
+            txtClientName.Size = new Size(150, 31);
+            txtClientName.TabIndex = 6;
+            // 
+            // txtClientPhone
+            // 
             txtClientPhone.Location = new Point(12, 237);
+            txtClientPhone.Name = "txtClientPhone";
             txtClientPhone.Size = new Size(150, 31);
-
+            txtClientPhone.TabIndex = 5;
+            // 
+            // lblClientID
+            // 
             lblClientID.Location = new Point(49, 35);
+            lblClientID.Name = "lblClientID";
+            lblClientID.Size = new Size(100, 23);
+            lblClientID.TabIndex = 4;
             lblClientID.Text = "ClientID";
-
+            // 
+            // lblClientName
+            // 
             lblClientName.Location = new Point(49, 95);
+            lblClientName.Name = "lblClientName";
+            lblClientName.Size = new Size(130, 23);
+            lblClientName.TabIndex = 3;
             lblClientName.Text = "Client Name";
-
+            // 
+            // lblClientAddress
+            // 
             lblClientAddress.Location = new Point(49, 151);
+            lblClientAddress.Name = "lblClientAddress";
+            lblClientAddress.Size = new Size(130, 23);
+            lblClientAddress.TabIndex = 2;
             lblClientAddress.Text = "Client Address";
-
+            // 
+            // lblClientPhone
+            // 
             lblClientPhone.Location = new Point(49, 209);
+            lblClientPhone.Name = "lblClientPhone";
+            lblClientPhone.Size = new Size(142, 23);
+            lblClientPhone.TabIndex = 1;
             lblClientPhone.Text = "Phone Number";
-
+            // 
             // btnAddClient
+            // 
             btnAddClient.Location = new Point(191, 235);
+            btnAddClient.Name = "btnAddClient";
             btnAddClient.Size = new Size(112, 34);
+            btnAddClient.TabIndex = 0;
             btnAddClient.Text = "Add Client";
             btnAddClient.UseVisualStyleBackColor = true;
             btnAddClient.Click += btnAddClient_Click;
-
+            // 
             // AdminForm
+            // 
             ClientSize = new Size(1023, 431);
             Controls.Add(btnAddClient);
             Controls.Add(lblClientPhone);
@@ -112,8 +154,7 @@ namespace WinFormsApp1
             Controls.Add(btnBack);
             Name = "AdminForm";
             Text = "Admin";
-
-            ((System.ComponentModel.ISupportInitialize)dgvClients).EndInit();
+            ((ISupportInitialize)dgvClients).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
