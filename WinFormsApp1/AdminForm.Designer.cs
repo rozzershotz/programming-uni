@@ -22,6 +22,8 @@ namespace WinFormsApp1
         private Button btnAddClient;
         private Button btnEditClient;
         private Button btnDeleteClient;
+        private TextBox txtSearch;
+        private Button btnSearch;
 
         private void InitializeComponent()
         {
@@ -168,6 +170,7 @@ namespace WinFormsApp1
             txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(150, 31);
             txtSearch.TabIndex = 9;
+            txtSearch.TextChanged += txtSearch_TextChanged;
             // 
             // btnSearch
             // 
@@ -177,6 +180,7 @@ namespace WinFormsApp1
             btnSearch.TabIndex = 10;
             btnSearch.Text = "Search";
             btnSearch.UseVisualStyleBackColor = true;
+            btnSearch.Click += btnSearch_Click;
             // 
             // AdminForm
             // 
@@ -212,8 +216,7 @@ namespace WinFormsApp1
             }
             base.Dispose(disposing);
         }
-        private TextBox txtSearch;
-        private Button btnSearch;
+        
     }
 
 }

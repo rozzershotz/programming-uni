@@ -22,6 +22,8 @@ namespace WinFormsApp1
         private Button btnAddClient;
         private Button btnEditClient;
         private Button btnDeleteClient;
+        private TextBox txtSearch;
+        private Button btnSearch;
 
         private void InitializeComponent()
         {
@@ -37,6 +39,8 @@ namespace WinFormsApp1
             lblClientAddress = new Label();
             lblClientPhone = new Label();
             btnAddClient = new Button();
+            txtSearch = new TextBox();
+            btnSearch = new Button();
             ((ISupportInitialize)dgvClients).BeginInit();
             SuspendLayout();
             // 
@@ -57,7 +61,7 @@ namespace WinFormsApp1
             labelTitle.Name = "labelTitle";
             labelTitle.Size = new Size(65, 25);
             labelTitle.TabIndex = 0;
-            labelTitle.Text = "Admin";
+            labelTitle.Text = "User";
             // 
             // dgvClients
             // 
@@ -138,10 +142,30 @@ namespace WinFormsApp1
             btnAddClient.UseVisualStyleBackColor = true;
             btnAddClient.Click += btnAddClient_Click;
             // 
+            // txtSearch
+            // 
+            txtSearch.Location = new Point(682, 187);
+            txtSearch.Name = "txtSearch";
+            txtSearch.Size = new Size(150, 31);
+            txtSearch.TabIndex = 9;
+            txtSearch.TextChanged += txtSearch_TextChanged;
+            // 
+            // btnSearch
+            // 
+            btnSearch.Location = new Point(720, 234);
+            btnSearch.Name = "btnSearch";
+            btnSearch.Size = new Size(112, 34);
+            btnSearch.TabIndex = 10;
+            btnSearch.Text = "Search";
+            btnSearch.UseVisualStyleBackColor = true;
+            btnSearch.Click += btnSearch_Click;
+            // 
             // UserForm
             // 
             ClientSize = new Size(1023, 431);
             Controls.Add(btnAddClient);
+            Controls.Add(btnSearch);
+            Controls.Add(txtSearch);
             Controls.Add(lblClientPhone);
             Controls.Add(lblClientAddress);
             Controls.Add(lblClientName);
@@ -154,7 +178,7 @@ namespace WinFormsApp1
             Controls.Add(labelTitle);
             Controls.Add(btnBack);
             Name = "UserForm";
-            Text = "Admin";
+            Text = "User";
             ((ISupportInitialize)dgvClients).EndInit();
             ResumeLayout(false);
             PerformLayout();

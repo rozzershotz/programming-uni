@@ -73,6 +73,28 @@ namespace WinFormsApp1
             }
         }
 
+        private void FilterClients(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                // Show all clients if query is empty
+                dgvClients.DataSource = clients;
+                return;
+            }
+
+            query = query.ToLower(); // case-insensitive
+
+            // Filter clients
+            var filtered = clients.Where(c =>
+                (!string.IsNullOrEmpty(c.ClientID) && c.ClientID.ToLower().Contains(query)) ||
+                (!string.IsNullOrEmpty(c.ClientName) && c.ClientName.ToLower().Contains(query)) ||
+                (!string.IsNullOrEmpty(c.ClientAddress) && c.ClientAddress.ToLower().Contains(query)) ||
+                (!string.IsNullOrEmpty(c.ClientPhone) && c.ClientPhone.ToLower().Contains(query))
+            ).ToList();
+
+            // Bind filtered results
+            dgvClients.DataSource = new BindingList<Client>(filtered);
+        }
         // Back button
         private void btnBack_Click(object sender, EventArgs e)
         {
@@ -138,9 +160,22 @@ namespace WinFormsApp1
             txtClientPhone.Text = selectedClient.ClientPhone;
         }
 
-        
 
-        
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            FilterClients(txtSearch.Text);
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            FilterClients(txtSearch.Text);
+        }
+        private void btnClearSearch_Click(object sender, EventArgs e)
+        {
+            txtSearch.Clear();
+            dgvClients.DataSource = clients;
+        }
+
 
 
 
