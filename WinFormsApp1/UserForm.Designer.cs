@@ -41,6 +41,8 @@ namespace WinFormsApp1
             btnAddClient = new Button();
             txtSearch = new TextBox();
             btnSearch = new Button();
+            btnPrint = new Button();
+            chkSortByName = new CheckBox();
             ((ISupportInitialize)dgvClients).BeginInit();
             SuspendLayout();
             // 
@@ -59,7 +61,7 @@ namespace WinFormsApp1
             labelTitle.AutoSize = true;
             labelTitle.Location = new Point(10, 10);
             labelTitle.Name = "labelTitle";
-            labelTitle.Size = new Size(65, 25);
+            labelTitle.Size = new Size(47, 25);
             labelTitle.TabIndex = 0;
             labelTitle.Text = "User";
             // 
@@ -160,9 +162,30 @@ namespace WinFormsApp1
             btnSearch.UseVisualStyleBackColor = true;
             btnSearch.Click += btnSearch_Click;
             // 
+            // btnPrint
+            // 
+            btnPrint.Location = new Point(422, 56);
+            btnPrint.Name = "btnPrint";
+            btnPrint.Size = new Size(112, 34);
+            btnPrint.TabIndex = 11;
+            btnPrint.Text = "Print";
+            btnPrint.UseVisualStyleBackColor = true;
+            // 
+            // chkSortByName
+            // 
+            chkSortByName.AutoSize = true;
+            chkSortByName.Location = new Point(540, 61);
+            chkSortByName.Name = "chkSortByName";
+            chkSortByName.Size = new Size(145, 29);
+            chkSortByName.TabIndex = 12;
+            chkSortByName.Text = "Sort by name";
+            chkSortByName.UseVisualStyleBackColor = true;
+            // 
             // UserForm
             // 
             ClientSize = new Size(1023, 431);
+            Controls.Add(chkSortByName);
+            Controls.Add(btnPrint);
             Controls.Add(btnAddClient);
             Controls.Add(btnSearch);
             Controls.Add(txtSearch);
@@ -183,6 +206,7 @@ namespace WinFormsApp1
             ResumeLayout(false);
             PerformLayout();
         }
-
+        private Button btnPrint;
+        private CheckBox chkSortByName;
     }
 }

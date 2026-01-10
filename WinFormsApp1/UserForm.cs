@@ -2,6 +2,8 @@ using System;
 using System.ComponentModel;
 using System.Text.Json;
 using System.Windows.Forms;
+using System.Drawing.Printing;
+using System.Text;
 
 namespace WinFormsApp1
 {
@@ -176,6 +178,47 @@ namespace WinFormsApp1
             dgvClients.DataSource = clients;
         }
 
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+            if (clients.Count == 0)
+            {
+                MessageBox.Show("No clients to print.");
+                return;
+            }
+
+            // Create a list to print
+            var listToPrint = chkSortByName.Checked
+                ? clients.OrderBy(c => c.ClientName).ToList()
+                : clients.ToList(); // as stored
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Client Records");
+            sb.AppendLine("==============");
+            foreach (var c in listToPrint)
+            {
+                sb.AppendLine($"ID: {c.ClientID}");
+                sb.AppendLine($"Name: {c.ClientName}");
+                sb.AppendLine($"Address: {c.ClientAddress}");
+                sb.AppendLine($"Phone: {c.ClientPhone}");
+                sb.AppendLine("----------------------");
+            }
+
+            // Setup print
+            PrintDocument pd = new PrintDocument();
+            pd.PrintPage += (s, ev) =>
+            {
+                ev.Graphics.DrawString(sb.ToString(), new Font("Arial", 12), Brushes.Black, new PointF(100, 100));
+            };
+
+            // Show preview before printing
+            PrintPreviewDialog preview = new PrintPreviewDialog
+            {
+                Document = pd,
+                Width = 800,
+                Height = 600
+            };
+            preview.ShowDialog();
+        }
 
 
 

@@ -43,6 +43,8 @@ namespace WinFormsApp1
             btnDeleteClient = new Button();
             txtSearch = new TextBox();
             btnSearch = new Button();
+            btnPrint = new Button();
+            chkSortByName = new CheckBox();
             ((ISupportInitialize)dgvClients).BeginInit();
             SuspendLayout();
             // 
@@ -182,9 +184,31 @@ namespace WinFormsApp1
             btnSearch.UseVisualStyleBackColor = true;
             btnSearch.Click += btnSearch_Click;
             // 
+            // btnPrint
+            // 
+            btnPrint.Location = new Point(544, 84);
+            btnPrint.Name = "btnPrint";
+            btnPrint.Size = new Size(112, 34);
+            btnPrint.TabIndex = 11;
+            btnPrint.Text = "Print";
+            btnPrint.UseVisualStyleBackColor = true;
+            btnPrint.Click += btnPrint_Click;
+            // 
+            // chkSortByName
+            // 
+            chkSortByName.AutoSize = true;
+            chkSortByName.Location = new Point(662, 89);
+            chkSortByName.Name = "chkSortByName";
+            chkSortByName.Size = new Size(148, 29);
+            chkSortByName.TabIndex = 12;
+            chkSortByName.Text = "Sort by Name";
+            chkSortByName.UseVisualStyleBackColor = true;
+            // 
             // AdminForm
             // 
             ClientSize = new Size(1023, 431);
+            Controls.Add(chkSortByName);
+            Controls.Add(btnPrint);
             Controls.Add(btnSearch);
             Controls.Add(txtSearch);
             Controls.Add(btnDeleteClient);
@@ -216,7 +240,8 @@ namespace WinFormsApp1
             }
             base.Dispose(disposing);
         }
-        
+        private Button btnPrint;
+        private CheckBox chkSortByName;
     }
 
 }
