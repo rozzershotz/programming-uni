@@ -20,6 +20,8 @@ namespace WinFormsApp1
         private Label lblClientAddress;
         private Label lblClientPhone;
         private Button btnAddClient;
+        private Button btnEditClient;
+        private Button btnDeleteClient;
 
         private void InitializeComponent()
         {
@@ -35,6 +37,8 @@ namespace WinFormsApp1
             lblClientAddress = new Label();
             lblClientPhone = new Label();
             btnAddClient = new Button();
+            btnEditClient = new Button();
+            btnDeleteClient = new Button();
             ((ISupportInitialize)dgvClients).BeginInit();
             SuspendLayout();
             // 
@@ -79,7 +83,6 @@ namespace WinFormsApp1
             txtClientID.Name = "txtClientID";
             txtClientID.Size = new Size(150, 31);
             txtClientID.TabIndex = 7;
-            
             // 
             // txtClientName
             // 
@@ -137,9 +140,32 @@ namespace WinFormsApp1
             btnAddClient.UseVisualStyleBackColor = true;
             btnAddClient.Click += btnAddClient_Click;
             // 
+            // btnEditClient
+            // 
+            btnEditClient = new Button();
+            btnEditClient.Location = new System.Drawing.Point(320, 235);
+            btnEditClient.Size = new System.Drawing.Size(112, 34);
+            btnEditClient.Text = "Edit Client";
+            btnEditClient.UseVisualStyleBackColor = true;
+            btnEditClient.Click += btnEditClient_Click;
+            Controls.Add(btnEditClient);
+
+            // 
+            // btnDeleteClient
+            // 
+            btnDeleteClient = new Button();
+            btnDeleteClient.Location = new System.Drawing.Point(450, 235);
+            btnDeleteClient.Size = new System.Drawing.Size(112, 34);
+            btnDeleteClient.Text = "Delete Client";
+            btnDeleteClient.UseVisualStyleBackColor = true;
+            btnDeleteClient.Click += btnDeleteClient_Click;
+            Controls.Add(btnDeleteClient);
+            // 
             // AdminForm
             // 
             ClientSize = new Size(1023, 431);
+            Controls.Add(btnDeleteClient);
+            Controls.Add(btnEditClient);
             Controls.Add(btnAddClient);
             Controls.Add(lblClientPhone);
             Controls.Add(lblClientAddress);
@@ -167,6 +193,7 @@ namespace WinFormsApp1
             }
             base.Dispose(disposing);
         }
+        
     }
 
 }

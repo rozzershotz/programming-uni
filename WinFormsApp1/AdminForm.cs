@@ -29,9 +29,17 @@ namespace WinFormsApp1
             dgvClients.DataSource = clients;
         }
 
+        private Client selectedClient = null;
+
+
         private string dataFile = Path.Combine(
     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-    "clients.json"); // file in app folder
+    "clients.json");
+
+        
+
+        
+
 
         // Save clients to JSON
         private void SaveClientsToFile()
@@ -63,6 +71,7 @@ namespace WinFormsApp1
                     }
                 }
             }
+            
             catch (Exception ex)
             {
                 MessageBox.Show("Error loading clients: " + ex.Message);
@@ -123,19 +132,67 @@ namespace WinFormsApp1
         // Safely populate textboxes when a row is clicked
         private void dgvClients_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Only valid rows
             if (e.RowIndex < 0 || e.RowIndex >= clients.Count)
                 return;
 
-            var client = clients[e.RowIndex];
+            selectedClient = clients[e.RowIndex];
 
-            if (client == null) return; // Extra safety
-
-            txtClientID.Text = client.ClientID;
-            txtClientName.Text = client.ClientName;
-            txtClientAddress.Text = client.ClientAddress;
-            txtClientPhone.Text = client.ClientPhone;
+            txtClientID.Text = selectedClient.ClientID;
+            txtClientName.Text = selectedClient.ClientName;
+            txtClientAddress.Text = selectedClient.ClientAddress;
+            txtClientPhone.Text = selectedClient.ClientPhone;
         }
+
+        private void btnEditClient_Click(object sender, EventArgs e)
+        {
+            if (selectedClient == null)
+            {
+                MessageBox.Show("Please select a client to edit.");
+                return;
+            }
+
+            // Update properties
+            selectedClient.ClientID = txtClientID.Text;
+            selectedClient.ClientName = txtClientName.Text;
+            selectedClient.ClientAddress = txtClientAddress.Text;
+            selectedClient.ClientPhone = txtClientPhone.Text;
+
+            // Refresh grid
+            dgvClients.Refresh();
+
+            // Save to file
+            SaveClientsToFile();
+
+            MessageBox.Show("Client updated successfully!");
+        }
+
+        private void btnDeleteClient_Click(object sender, EventArgs e)
+        {
+            if (selectedClient == null)
+            {
+                MessageBox.Show("Please select a client to delete.");
+                return;
+            }
+
+            var result = MessageBox.Show(
+                $"Are you sure you want to delete {selectedClient.ClientName}?",
+                "Confirm Delete",
+                MessageBoxButtons.YesNo);
+
+            if (result == DialogResult.Yes)
+            {
+                clients.Remove(selectedClient);
+                selectedClient = null;
+
+                ClearTextboxes();
+                SaveClientsToFile();
+
+                MessageBox.Show("Client deleted successfully!");
+            }
+        }
+
+
+
 
         // Helper method to clear input fields
         private void ClearTextboxes()
@@ -144,6 +201,8 @@ namespace WinFormsApp1
             txtClientName.Clear();
             txtClientAddress.Clear();
             txtClientPhone.Clear();
+            dgvClients.ClearSelection();
+            selectedClient = null;
             txtClientID.Focus();
         }
 
