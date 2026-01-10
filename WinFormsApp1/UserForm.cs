@@ -19,7 +19,7 @@ namespace WinFormsApp1
             dgvClients.AllowUserToAddRows = false;
             dgvClients.DataSource = clients;
 
-            // Hook up safe CellClick event
+            
             dgvClients.CellClick += dgvClients_CellClick;
 
             LoadClientsFromFile();
@@ -38,7 +38,7 @@ namespace WinFormsApp1
 
 
 
-        // Save clients to JSON
+        
         private void SaveClientsToFile()
         {
             try
@@ -52,7 +52,7 @@ namespace WinFormsApp1
             }
         }
 
-        // Load clients from JSON
+        
         private void LoadClientsFromFile()
         {
             try
@@ -79,14 +79,14 @@ namespace WinFormsApp1
         {
             if (string.IsNullOrWhiteSpace(query))
             {
-                // Show all clients if query is empty
+                
                 dgvClients.DataSource = clients;
                 return;
             }
 
-            query = query.ToLower(); // case-insensitive
+            query = query.ToLower(); 
 
-            // Filter clients
+            
             var filtered = clients.Where(c =>
                 (!string.IsNullOrEmpty(c.ClientID) && c.ClientID.ToLower().Contains(query)) ||
                 (!string.IsNullOrEmpty(c.ClientName) && c.ClientName.ToLower().Contains(query)) ||
@@ -94,20 +94,20 @@ namespace WinFormsApp1
                 (!string.IsNullOrEmpty(c.ClientPhone) && c.ClientPhone.ToLower().Contains(query))
             ).ToList();
 
-            // Bind filtered results
+            
             dgvClients.DataSource = new BindingList<Client>(filtered);
         }
-        // Back button
+        
         private void btnBack_Click(object sender, EventArgs e)
         {
             new Form1().Show();
             this.Hide();
         }
 
-        // Add client
+        
         private void btnAddClient_Click(object sender, EventArgs e)
         {
-            // Basic validation
+            
             if (string.IsNullOrWhiteSpace(txtClientID.Text) ||
                 string.IsNullOrWhiteSpace(txtClientName.Text))
             {
@@ -115,7 +115,7 @@ namespace WinFormsApp1
                 return;
             }
 
-            // Optional: prevent duplicate ClientID
+            
             foreach (var c in clients)
             {
                 if (c.ClientID == txtClientID.Text)
@@ -125,7 +125,7 @@ namespace WinFormsApp1
                 }
             }
 
-            // Create client object
+            
             Client client = new Client
             {
                 ClientID = txtClientID.Text,
@@ -137,7 +137,7 @@ namespace WinFormsApp1
             
 
             clients.Add(client);
-            SaveClientsToFile(); // save after adding
+            SaveClientsToFile(); 
             ClearTextboxes();
             MessageBox.Show("Client record added successfully!");
         }
@@ -148,7 +148,7 @@ namespace WinFormsApp1
         }
 
 
-        // Safely populate textboxes when a row is clicked
+        
         private void dgvClients_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.RowIndex >= clients.Count)
@@ -186,10 +186,10 @@ namespace WinFormsApp1
                 return;
             }
 
-            // Create a list to print
+            
             var listToPrint = chkSortByName.Checked
                 ? clients.OrderBy(c => c.ClientName).ToList()
-                : clients.ToList(); // as stored
+                : clients.ToList(); 
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("Client Records");
@@ -203,14 +203,14 @@ namespace WinFormsApp1
                 sb.AppendLine("----------------------");
             }
 
-            // Setup print
+            
             PrintDocument pd = new PrintDocument();
             pd.PrintPage += (s, ev) =>
             {
                 ev.Graphics.DrawString(sb.ToString(), new Font("Arial", 12), Brushes.Black, new PointF(100, 100));
             };
 
-            // Show preview before printing
+            
             PrintPreviewDialog preview = new PrintPreviewDialog
             {
                 Document = pd,
@@ -223,7 +223,7 @@ namespace WinFormsApp1
 
 
 
-        // Helper method to clear input fields
+        
         private void ClearTextboxes()
         {
             txtClientID.Clear();
