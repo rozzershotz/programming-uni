@@ -1,5 +1,7 @@
-using MySql.Data.MySqlClient;
 using System;
+using System.Collections.Generic;
+using System.Data;
+using Microsoft.Data.SqlClient;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
@@ -8,7 +10,8 @@ namespace WinFormsApp1
     public partial class AdminForm : Form
     {
 
-        private string connectionString = "server=localhost;user=root;password=3PYYWCCE;database=xenstathatos_clientDB";
+        // Example connection string (adjust authentication/database name)
+        private string connectionString = @"Server=msi\\mssqlserver01;Database=Clients;Trusted_Connection=True;";
         private List<Client> clientList = new List<Client>();
         private int editingRowIndex = -1;
 
@@ -29,21 +32,21 @@ namespace WinFormsApp1
             clientList.Clear();
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                using (var conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT ClientID, ClientName, ClientAddress, ClientPhone FROM Clients";
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    string query = "SELECT ClientID, ClientName, ClientAddress, ClientPhone FROM dbo.Clients";
+                    using (var cmd = new SqlCommand(query, conn))
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
                             clientList.Add(new Client
                             {
-                                ClientID = reader["ClientID"].ToString(),
-                                ClientName = reader["ClientName"].ToString(),
-                                ClientAddress = reader["ClientAddress"].ToString(),
-                                ClientPhone = reader["ClientPhone"].ToString()
+                                ClientID = reader["ClientID"]?.ToString(),
+                                ClientName = reader["ClientName"]?.ToString(),
+                                ClientAddress = reader["ClientAddress"]?.ToString(),
+                                ClientPhone = reader["ClientPhone"]?.ToString()
                             });
                         }
                     }
@@ -60,17 +63,19 @@ namespace WinFormsApp1
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                using (var conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = @"INSERT INTO Clients (ClientID, ClientName, ClientAddress, ClientPhone) 
+                    string query = @"INSERT INTO dbo.Clients (ClientID, ClientName, ClientAddress, ClientPhone) 
                                      VALUES (@id, @name, @address, @phone)";
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@id", client.ClientID);
-                    cmd.Parameters.AddWithValue("@name", client.ClientName);
-                    cmd.Parameters.AddWithValue("@address", client.ClientAddress);
-                    cmd.Parameters.AddWithValue("@phone", client.ClientPhone);
-                    cmd.ExecuteNonQuery();
+                    using (var cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", client.ClientID ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@name", client.ClientName ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@address", client.ClientAddress ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@phone", client.ClientPhone ?? (object)DBNull.Value);
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
             catch (Exception ex)
@@ -83,18 +88,20 @@ namespace WinFormsApp1
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                using (var conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = @"UPDATE Clients SET 
+                    string query = @"UPDATE dbo.Clients SET 
                                      ClientName=@name, ClientAddress=@address, ClientPhone=@phone 
                                      WHERE ClientID=@id";
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@id", client.ClientID);
-                    cmd.Parameters.AddWithValue("@name", client.ClientName);
-                    cmd.Parameters.AddWithValue("@address", client.ClientAddress);
-                    cmd.Parameters.AddWithValue("@phone", client.ClientPhone);
-                    cmd.ExecuteNonQuery();
+                    using (var cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", client.ClientID ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@name", client.ClientName ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@address", client.ClientAddress ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@phone", client.ClientPhone ?? (object)DBNull.Value);
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
             catch (Exception ex)
@@ -107,13 +114,15 @@ namespace WinFormsApp1
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                using (var conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "DELETE FROM Clients WHERE ClientID=@id";
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@id", clientId);
-                    cmd.ExecuteNonQuery();
+                    string query = "DELETE FROM dbo.Clients WHERE ClientID=@id";
+                    using (var cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", clientId ?? (object)DBNull.Value);
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
             catch (Exception ex)
