@@ -116,8 +116,6 @@ namespace WinFormsApp1
             };
 
             clients.Add(client);
-
-            clients.Add(client);
             SaveClientsToFile(); // save after adding
             ClearTextboxes();
             MessageBox.Show("Client record added successfully!");
@@ -188,6 +186,7 @@ namespace WinFormsApp1
                 SaveClientsToFile();
 
                 MessageBox.Show("Client deleted successfully!");
+                dgvClients.Refresh();
             }
         }
 
