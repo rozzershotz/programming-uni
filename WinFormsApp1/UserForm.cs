@@ -17,7 +17,6 @@ namespace WinFormsApp1
             dgvClients.AllowUserToAddRows = false;
             dgvClients.DataSource = clients;
 
-            // Hook up safe CellClick event
             dgvClients.CellClick += dgvClients_CellClick;
 
             LoadClientsFromFile();

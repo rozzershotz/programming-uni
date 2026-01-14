@@ -57,7 +57,7 @@ namespace WinFormsApp1
             labelTitle.Name = "labelTitle";
             labelTitle.Size = new Size(65, 25);
             labelTitle.TabIndex = 0;
-            labelTitle.Text = "Admin";
+            labelTitle.Text = "Staff";
             // 
             // dgvClients
             // 
@@ -154,7 +154,7 @@ namespace WinFormsApp1
             Controls.Add(labelTitle);
             Controls.Add(btnBack);
             Name = "UserForm";
-            Text = "Admin";
+            Text = "Staff";
             ((ISupportInitialize)dgvClients).EndInit();
             ResumeLayout(false);
             PerformLayout();

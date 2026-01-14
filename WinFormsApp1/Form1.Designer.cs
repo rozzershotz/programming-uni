@@ -2,70 +2,90 @@
 {
     partial class Form1
     {
-        /// <summary>
-        ///  Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
+        private Label lblTitle;
+        private Label lblUsername;
+        private Label lblPassword;
+        private TextBox txtUsername;
+        private TextBox txtPassword;
+        private Button btnLogin;
 
-        /// <summary>
-        ///  Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
-            button2 = new Button();
+            lblTitle = new Label();
+            lblUsername = new Label();
+            lblPassword = new Label();
+            txtUsername = new TextBox();
+            txtPassword = new TextBox();
+            btnLogin = new Button();
             SuspendLayout();
             // 
-            // button1
+            // lblTitle
             // 
-            button1.Location = new Point(242, 182);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 0;
-            button1.Text = "Admin";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            lblTitle.Location = new System.Drawing.Point(300, 30);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new System.Drawing.Size(150, 30);
+            lblTitle.TabIndex = 0;
+            lblTitle.Text = "CRS Login";
             // 
-            // button2
+            // lblUsername
             // 
-            button2.Location = new Point(459, 182);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 23);
-            button2.TabIndex = 1;
-            button2.Text = "User";
-            button2.UseVisualStyleBackColor = true;
+            lblUsername.AutoSize = true;
+            lblUsername.Location = new System.Drawing.Point(200, 100);
+            lblUsername.Name = "lblUsername";
+            lblUsername.Size = new System.Drawing.Size(75, 23);
+            lblUsername.TabIndex = 1;
+            lblUsername.Text = "Username";
+            // 
+            // txtUsername
+            // 
+            txtUsername.Location = new System.Drawing.Point(300, 100);
+            txtUsername.Name = "txtUsername";
+            txtUsername.Size = new System.Drawing.Size(150, 31);
+            txtUsername.TabIndex = 2;
+            // 
+            // lblPassword
+            // 
+            lblPassword.AutoSize = true;
+            lblPassword.Location = new System.Drawing.Point(200, 150);
+            lblPassword.Name = "lblPassword";
+            lblPassword.Size = new System.Drawing.Size(70, 23);
+            lblPassword.TabIndex = 3;
+            lblPassword.Text = "Password";
+            // 
+            // txtPassword
+            // 
+            txtPassword.Location = new System.Drawing.Point(300, 150);
+            txtPassword.Name = "txtPassword";
+            txtPassword.Size = new System.Drawing.Size(150, 31);
+            txtPassword.TabIndex = 4;
+            txtPassword.PasswordChar = '*';
+            // 
+            // btnLogin
+            // 
+            btnLogin.Location = new System.Drawing.Point(300, 200);
+            btnLogin.Name = "btnLogin";
+            btnLogin.Size = new System.Drawing.Size(150, 35);
+            btnLogin.TabIndex = 5;
+            btnLogin.Text = "Login";
+            btnLogin.UseVisualStyleBackColor = true;
+            btnLogin.Click += btnLogin_Click;
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            ClientSize = new System.Drawing.Size(800, 450);
+            Controls.Add(lblTitle);
+            Controls.Add(lblUsername);
+            Controls.Add(txtUsername);
+            Controls.Add(lblPassword);
+            Controls.Add(txtPassword);
+            Controls.Add(btnLogin);
             Name = "Form1";
-            Text = "Form1";
+            Text = "CRS Login";
             ResumeLayout(false);
+            PerformLayout();
         }
-
-        #endregion
-
-        private Button button1;
-        private Button button2;
     }
 }
