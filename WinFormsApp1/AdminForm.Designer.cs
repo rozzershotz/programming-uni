@@ -24,7 +24,8 @@ namespace WinFormsApp1
         private Button btnDeleteClient;
         private TextBox txtSearch;
         private Button btnSearch;
-
+        private Button btnPrint;
+        private CheckBox chkSortByName;
         private void InitializeComponent()
         {
             btnBack = new Button();
@@ -240,8 +241,7 @@ namespace WinFormsApp1
             }
             base.Dispose(disposing);
         }
-        private Button btnPrint;
-        private CheckBox chkSortByName;
+        
     }
 
 }

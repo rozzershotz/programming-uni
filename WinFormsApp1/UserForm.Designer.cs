@@ -24,6 +24,8 @@ namespace WinFormsApp1
         private Button btnDeleteClient;
         private TextBox txtSearch;
         private Button btnSearch;
+        private Button btnPrint;
+        private CheckBox chkSortByName;
 
         private void InitializeComponent()
         {
@@ -170,6 +172,7 @@ namespace WinFormsApp1
             btnPrint.TabIndex = 11;
             btnPrint.Text = "Print";
             btnPrint.UseVisualStyleBackColor = true;
+            btnPrint.Click += btnPrint_Click;
             // 
             // chkSortByName
             // 
@@ -206,7 +209,6 @@ namespace WinFormsApp1
             ResumeLayout(false);
             PerformLayout();
         }
-        private Button btnPrint;
-        private CheckBox chkSortByName;
+        
     }
 }

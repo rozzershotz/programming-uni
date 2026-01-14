@@ -11,6 +11,7 @@ namespace WinFormsApp1
     {
         BindingList<Client> clients = new BindingList<Client>();
 
+        // Constructor
         public UserForm()
         {
             InitializeComponent();
@@ -28,7 +29,7 @@ namespace WinFormsApp1
         }
         private Client selectedClient = null;
 
-
+        // File path to store client data
         private string dataFile = Path.Combine(
     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
     "clients.json");
@@ -38,7 +39,7 @@ namespace WinFormsApp1
 
 
 
-        
+        // Save clients to JSON file
         private void SaveClientsToFile()
         {
             try
@@ -52,7 +53,7 @@ namespace WinFormsApp1
             }
         }
 
-        
+        // Load clients from JSON file
         private void LoadClientsFromFile()
         {
             try
@@ -74,7 +75,7 @@ namespace WinFormsApp1
                 MessageBox.Show("Error loading clients: " + ex.Message);
             }
         }
-
+        // Filter clients based on search query
         private void FilterClients(string query)
         {
             if (string.IsNullOrWhiteSpace(query))
@@ -89,22 +90,21 @@ namespace WinFormsApp1
             
             var filtered = clients.Where(c =>
                 (!string.IsNullOrEmpty(c.ClientID) && c.ClientID.ToLower().Contains(query)) ||
-                (!string.IsNullOrEmpty(c.ClientName) && c.ClientName.ToLower().Contains(query)) ||
-                (!string.IsNullOrEmpty(c.ClientAddress) && c.ClientAddress.ToLower().Contains(query)) ||
-                (!string.IsNullOrEmpty(c.ClientPhone) && c.ClientPhone.ToLower().Contains(query))
+                (!string.IsNullOrEmpty(c.ClientName) && c.ClientName.ToLower().Contains(query))
+                
             ).ToList();
 
             
             dgvClients.DataSource = new BindingList<Client>(filtered);
         }
-        
+        // Creates functionality for Back button to return to main form
         private void btnBack_Click(object sender, EventArgs e)
         {
             new Form1().Show();
             this.Hide();
         }
 
-        
+        // Creates functionality for Add Client button to add new client records
         private void btnAddClient_Click(object sender, EventArgs e)
         {
             
@@ -125,7 +125,7 @@ namespace WinFormsApp1
                 }
             }
 
-            
+            // Create new client object
             Client client = new Client
             {
                 ClientID = txtClientID.Text,
@@ -142,13 +142,14 @@ namespace WinFormsApp1
             MessageBox.Show("Client record added successfully!");
         }
 
+        //Saves the clients to file when the form is closed
         private void AdminForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             SaveClientsToFile();
         }
 
 
-        
+        //Functionality for when a cell is clicked in the DataGridView
         private void dgvClients_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.RowIndex >= clients.Count)
@@ -162,22 +163,23 @@ namespace WinFormsApp1
             txtClientPhone.Text = selectedClient.ClientPhone;
         }
 
-
+        //Functionality for when the text in the search box is changed to filter client records
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
             FilterClients(txtSearch.Text);
         }
-
+        //Functionality for when the search button is clicked to filter client records
         private void btnSearch_Click(object sender, EventArgs e)
         {
             FilterClients(txtSearch.Text);
         }
+        //Functionality for Clear Search button to reset the search filter
         private void btnClearSearch_Click(object sender, EventArgs e)
         {
             txtSearch.Clear();
             dgvClients.DataSource = clients;
         }
-
+        //Functionality for the print button allowing a sheet of client records
         private void btnPrint_Click(object sender, EventArgs e)
         {
             if (clients.Count == 0)
@@ -193,7 +195,7 @@ namespace WinFormsApp1
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("Client Records");
-            sb.AppendLine("==============");
+            
             foreach (var c in listToPrint)
             {
                 sb.AppendLine($"ID: {c.ClientID}");
@@ -203,7 +205,7 @@ namespace WinFormsApp1
                 sb.AppendLine("----------------------");
             }
 
-            
+            // Set up PrintDocument
             PrintDocument pd = new PrintDocument();
             pd.PrintPage += (s, ev) =>
             {
@@ -223,7 +225,7 @@ namespace WinFormsApp1
 
 
 
-        
+        // Clears the textboxes and resets selection
         private void ClearTextboxes()
         {
             txtClientID.Clear();
