@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.IO;
 using System.Text.Json;
+using System.Drawing.Printing;
+using System.Text;
 
 namespace WinFormsApp1
 {
@@ -58,6 +60,7 @@ namespace WinFormsApp1
             }
         }
 
+        // Load clients from JSON file
         private void LoadClientsFromFile()
         {
             try
@@ -78,13 +81,38 @@ namespace WinFormsApp1
                 MessageBox.Show("Error loading clients: " + ex.Message);
             }
         }
+        // Filter clients based on search query
+        private void FilterClients(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                
+                dgvClients.DataSource = clients;
+                return;
+            }
 
+            query = query.ToLower(); 
+
+            
+            var filtered = clients.Where(c =>
+                (!string.IsNullOrEmpty(c.ClientID) && c.ClientID.ToLower().Contains(query)) ||
+                (!string.IsNullOrEmpty(c.ClientName) && c.ClientName.ToLower().Contains(query)) 
+                
+            ).ToList();
+
+            
+            dgvClients.DataSource = new BindingList<Client>(filtered);
+        }
+
+
+        // Creates functionality for Back button to return to main form
         private void btnBack_Click(object sender, EventArgs e)
         {
             new Form1().Show();
             this.Hide();
         }
 
+        // Creates functionality for Add Client button to add new client records
         private void btnAddClient_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtClientID.Text) ||
@@ -103,6 +131,7 @@ namespace WinFormsApp1
                 }
             }
 
+            // Create new client object
             Client client = new Client
             {
                 ClientID = txtClientID.Text,
@@ -129,7 +158,7 @@ namespace WinFormsApp1
             txtClientAddress.Text = selectedClient.ClientAddress;
             txtClientPhone.Text = selectedClient.ClientPhone;
         }
-
+        // Creates functionality for Edit Client button to edit selected client records
         private void btnEditClient_Click(object sender, EventArgs e)
         {
             if (selectedClient == null)
@@ -148,6 +177,7 @@ namespace WinFormsApp1
             MessageBox.Show("Client updated successfully!");
         }
 
+        // Creates functionality for Delete Client button to delete selected client records
         private void btnDeleteClient_Click(object sender, EventArgs e)
         {
             if (selectedClient == null)
@@ -172,6 +202,10 @@ namespace WinFormsApp1
             }
         }
 
+
+
+
+        // Clears the textboxes after adding, editing, or deleting a client
         private void ClearTextboxes()
         {
             txtClientID.Clear();
@@ -183,9 +217,67 @@ namespace WinFormsApp1
             txtClientID.Focus();
         }
 
-        private void AdminForm_FormClosing(object sender, FormClosingEventArgs e)
+        //Functionality for when the text in the search box is changed to filter client records
+        private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            SaveClientsToFile();
+            FilterClients(txtSearch.Text);
         }
+
+        //Functionality for when the search button is clicked to filter client records
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            FilterClients(txtSearch.Text);
+        }
+
+        //Functionality for Clear Search button to reset the search filter
+        private void btnClearSearch_Click(object sender, EventArgs e)
+        {
+            txtSearch.Clear();
+            dgvClients.DataSource = clients;
+        }
+
+        //Functionality for the print button allowing a sheet of client records
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+            if (clients.Count == 0)
+            {
+                MessageBox.Show("No clients to print.");
+                return;
+            }
+
+            
+            var listToPrint = chkSortByName.Checked
+                ? clients.OrderBy(c => c.ClientName).ToList()
+                : clients.ToList();
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Client Records");
+            
+            foreach (var c in listToPrint)
+            {
+                sb.AppendLine($"ID: {c.ClientID}");
+                sb.AppendLine($"Name: {c.ClientName}");
+                sb.AppendLine($"Address: {c.ClientAddress}");
+                sb.AppendLine($"Phone: {c.ClientPhone}");
+                sb.AppendLine("----------------------");
+            }
+
+            // Setup print
+            PrintDocument pd = new PrintDocument();
+            pd.PrintPage += (s, ev) =>
+            {
+                ev.Graphics.DrawString(sb.ToString(), new Font("Arial", 12), Brushes.Black, new PointF(100, 100));
+            };
+
+            // Show preview before printing
+            PrintPreviewDialog preview = new PrintPreviewDialog
+            {
+                Document = pd,
+                Width = 800,
+                Height = 600
+            };
+            preview.ShowDialog();
+        }
+
     }
 }

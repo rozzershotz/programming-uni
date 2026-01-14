@@ -2,6 +2,8 @@ using System;
 using System.ComponentModel;
 using System.Text.Json;
 using System.Windows.Forms;
+using System.Drawing.Printing;
+using System.Text;
 
 namespace WinFormsApp1
 {
@@ -9,6 +11,7 @@ namespace WinFormsApp1
     {
         BindingList<Client> clients = new BindingList<Client>();
 
+        // Constructor
         public UserForm()
         {
             InitializeComponent();
@@ -25,7 +28,7 @@ namespace WinFormsApp1
         }
         private Client selectedClient = null;
 
-
+        // File path to store client data
         private string dataFile = Path.Combine(
     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
     "clients.json");
@@ -35,7 +38,7 @@ namespace WinFormsApp1
 
 
 
-        // Save clients to JSON
+        // Save clients to JSON file
         private void SaveClientsToFile()
         {
             try
@@ -49,7 +52,7 @@ namespace WinFormsApp1
             }
         }
 
-        // Load clients from JSON
+        // Load clients from JSON file
         private void LoadClientsFromFile()
         {
             try
@@ -71,18 +74,39 @@ namespace WinFormsApp1
                 MessageBox.Show("Error loading clients: " + ex.Message);
             }
         }
+        // Filter clients based on search query
+        private void FilterClients(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                
+                dgvClients.DataSource = clients;
+                return;
+            }
 
-        // Back button
+            query = query.ToLower(); 
+
+            
+            var filtered = clients.Where(c =>
+                (!string.IsNullOrEmpty(c.ClientID) && c.ClientID.ToLower().Contains(query)) ||
+                (!string.IsNullOrEmpty(c.ClientName) && c.ClientName.ToLower().Contains(query))
+                
+            ).ToList();
+
+            
+            dgvClients.DataSource = new BindingList<Client>(filtered);
+        }
+        // Creates functionality for Back button to return to main form
         private void btnBack_Click(object sender, EventArgs e)
         {
             new Form1().Show();
             this.Hide();
         }
 
-        // Add client
+        // Creates functionality for Add Client button to add new client records
         private void btnAddClient_Click(object sender, EventArgs e)
         {
-            // Basic validation
+            
             if (string.IsNullOrWhiteSpace(txtClientID.Text) ||
                 string.IsNullOrWhiteSpace(txtClientName.Text))
             {
@@ -90,7 +114,7 @@ namespace WinFormsApp1
                 return;
             }
 
-            // Optional: prevent duplicate ClientID
+            
             foreach (var c in clients)
             {
                 if (c.ClientID == txtClientID.Text)
@@ -100,7 +124,7 @@ namespace WinFormsApp1
                 }
             }
 
-            // Create client object
+            // Create new client object
             Client client = new Client
             {
                 ClientID = txtClientID.Text,
@@ -112,18 +136,19 @@ namespace WinFormsApp1
             
 
             clients.Add(client);
-            SaveClientsToFile(); // save after adding
+            SaveClientsToFile(); 
             ClearTextboxes();
             MessageBox.Show("Client record added successfully!");
         }
 
+        //Saves the clients to file when the form is closed
         private void AdminForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             SaveClientsToFile();
         }
 
 
-        // Safely populate textboxes when a row is clicked
+        //Functionality for when a cell is clicked in the DataGridView
         private void dgvClients_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.RowIndex >= clients.Count)
@@ -137,14 +162,69 @@ namespace WinFormsApp1
             txtClientPhone.Text = selectedClient.ClientPhone;
         }
 
-        
+        //Functionality for when the text in the search box is changed to filter client records
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            FilterClients(txtSearch.Text);
+        }
+        //Functionality for when the search button is clicked to filter client records
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            FilterClients(txtSearch.Text);
+        }
+        //Functionality for Clear Search button to reset the search filter
+        private void btnClearSearch_Click(object sender, EventArgs e)
+        {
+            txtSearch.Clear();
+            dgvClients.DataSource = clients;
+        }
+        //Functionality for the print button allowing a sheet of client records
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+            if (clients.Count == 0)
+            {
+                MessageBox.Show("No clients to print.");
+                return;
+            }
 
-        
+            
+            var listToPrint = chkSortByName.Checked
+                ? clients.OrderBy(c => c.ClientName).ToList()
+                : clients.ToList(); 
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Client Records");
+            
+            foreach (var c in listToPrint)
+            {
+                sb.AppendLine($"ID: {c.ClientID}");
+                sb.AppendLine($"Name: {c.ClientName}");
+                sb.AppendLine($"Address: {c.ClientAddress}");
+                sb.AppendLine($"Phone: {c.ClientPhone}");
+                sb.AppendLine("----------------------");
+            }
+
+            // Set up PrintDocument
+            PrintDocument pd = new PrintDocument();
+            pd.PrintPage += (s, ev) =>
+            {
+                ev.Graphics.DrawString(sb.ToString(), new Font("Arial", 12), Brushes.Black, new PointF(100, 100));
+            };
+
+            
+            PrintPreviewDialog preview = new PrintPreviewDialog
+            {
+                Document = pd,
+                Width = 800,
+                Height = 600
+            };
+            preview.ShowDialog();
+        }
 
 
 
 
-        // Helper method to clear input fields
+        // Clears the textboxes and resets selection
         private void ClearTextboxes()
         {
             txtClientID.Clear();
