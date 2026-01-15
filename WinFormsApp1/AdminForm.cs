@@ -41,7 +41,7 @@ namespace WinFormsApp1
             ApplyRolePermissions();
         }
 
-        
+
         private void ApplyRolePermissions()
         {
             if (currentRole == "Staff")
@@ -90,21 +90,21 @@ namespace WinFormsApp1
         {
             if (string.IsNullOrWhiteSpace(query))
             {
-                
+
                 dgvClients.DataSource = clients;
                 return;
             }
 
-            query = query.ToLower(); 
+            query = query.ToLower();
 
-            
+
             var filtered = clients.Where(c =>
                 (!string.IsNullOrEmpty(c.ClientID) && c.ClientID.ToLower().Contains(query)) ||
-                (!string.IsNullOrEmpty(c.ClientName) && c.ClientName.ToLower().Contains(query)) 
-                
+                (!string.IsNullOrEmpty(c.ClientName) && c.ClientName.ToLower().Contains(query))
+
             ).ToList();
 
-            
+
             dgvClients.DataSource = new BindingList<Client>(filtered);
         }
 
@@ -256,6 +256,94 @@ namespace WinFormsApp1
             }
         }
 
+        private string serializeToCsv(IEnumerable<Client> list) =>
+ string.Join(Environment.NewLine,
+ list.Select(c => $"{c.ClientID},{c.ClientName},{c.ClientAddress},{c.ClientPhone},{c.ClientCategory}"));
+
+        private BindingList<Client> deserializeFromCsv(string csv) =>
+            new BindingList<Client>(
+                csv.Split(Environment.NewLine)
+                   .Select(l => l.Split(','))
+                   .Where(p => p.Length == 5)
+                   .Select(p => new Client
+                   {
+                       ClientID = p[0],
+                       ClientName = p[1],
+                       ClientAddress = p[2],
+                       ClientPhone = p[3],
+                       ClientCategory = p[4]
+                   }).ToList());
+
+        private string serializeToTxt(IEnumerable<Client> list) =>
+        string.Join(Environment.NewLine,
+        list.Select(c => $"{c.ClientID}|{c.ClientName}|{c.ClientAddress}|{c.ClientPhone}|{c.ClientCategory}"));
+
+        private BindingList<Client> deserializeFromTxt(string txt) =>
+            new BindingList<Client>(
+                txt.Split(Environment.NewLine)
+                   .Select(line => line.Split('|'))
+                   .Where(p => p.Length == 5)
+                   .Select(p => new Client
+                   {
+                       ClientID = p[0],
+                       ClientName = p[1],
+                       ClientAddress = p[2],
+                       ClientPhone = p[3],
+                       ClientCategory = p[4]
+                   }).ToList());
+
+
+
+        private void saveClients()
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "CSV Files (*.csv)|*.csv|TXT Files (*.txt)|*txt",
+                Title = "Save Clients"
+            };
+
+            if (saveFileDialog.ShowDialog() != DialogResult.OK)
+                return;
+            string extension = Path.GetExtension(saveFileDialog.FileName).ToLower();
+            string content = extension switch
+            {
+                ".csv" => serializeToCsv(clients),
+                ".txt" => serializeToTxt(clients),
+                _ => throw new Exception("Unsupported format")
+            };
+
+
+        }
+
+        private void loadClients()
+        {
+            OpenFileDialog ofd = new OpenFileDialog
+            {
+                Filter = "All Supported|*.json;*.csv;*.txt;*.xml"
+            };
+
+            if (ofd.ShowDialog() != DialogResult.OK)
+                return;
+
+            string encrypted = File.ReadAllText(ofd.FileName);
+            string decrypted = encryptionClass.DecryptString(encrypted);
+
+            string extension = Path.GetExtension(ofd.FileName).ToLower();
+
+            BindingList<Client> loaded = extension switch
+            {
+
+                ".csv" => deserializeFromCsv(decrypted),
+                ".txt" => deserializeFromTxt(decrypted),
+                _ => throw new Exception("Unsupported format")
+            };
+
+            clients = loaded ?? new BindingList<Client>();
+            dgvClients.DataSource = clients;
+
+            MessageBox.Show("File loaded and decrypted successfully.");
+        }
+
         //Functionality for the print button allowing a sheet of client records
         private void btnPrint_Click(object sender, EventArgs e)
         {
@@ -265,14 +353,14 @@ namespace WinFormsApp1
                 return;
             }
 
-            
+
             var listToPrint = chkSortByName.Checked
                 ? clients.OrderBy(c => c.ClientName).ToList()
                 : clients.ToList();
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("Client List");
-            
+
             foreach (var c in listToPrint)
             {
                 sb.AppendLine($"ID: {c.ClientID}");
@@ -299,5 +387,14 @@ namespace WinFormsApp1
             preview.ShowDialog();
         }
 
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            saveClients();
+        }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            loadClients();
+        }
     }
 }

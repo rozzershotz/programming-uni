@@ -82,21 +82,21 @@ namespace WinFormsApp1
         {
             if (string.IsNullOrWhiteSpace(query))
             {
-                
+
                 dgvClients.DataSource = clients;
                 return;
             }
 
-            query = query.ToLower(); 
+            query = query.ToLower();
 
-            
+
             var filtered = clients.Where(c =>
                 (!string.IsNullOrEmpty(c.ClientID) && c.ClientID.ToLower().Contains(query)) ||
                 (!string.IsNullOrEmpty(c.ClientName) && c.ClientName.ToLower().Contains(query))
-                
+
             ).ToList();
 
-            
+
             dgvClients.DataSource = new BindingList<Client>(filtered);
         }
         // Creates functionality for Back button to return to main form
@@ -109,7 +109,7 @@ namespace WinFormsApp1
         // Creates functionality for Add Client button to add new client records
         private void btnAddClient_Click(object sender, EventArgs e)
         {
-            
+
             if (string.IsNullOrWhiteSpace(txtClientID.Text) ||
                 string.IsNullOrWhiteSpace(txtClientName.Text))
             {
@@ -117,7 +117,7 @@ namespace WinFormsApp1
                 return;
             }
 
-            
+
             foreach (var c in clients)
             {
                 if (c.ClientID == txtClientID.Text)
@@ -137,10 +137,10 @@ namespace WinFormsApp1
                 ClientCategory = cmbCategory.SelectedItem.ToString()
             };
 
-            
+
 
             clients.Add(client);
-            SaveClientsToFile(); 
+            SaveClientsToFile();
             ResetClientForm();
             MessageBox.Show("Client record added successfully!");
         }
@@ -192,14 +192,14 @@ namespace WinFormsApp1
                 return;
             }
 
-            
+
             var listToPrint = chkSortByName.Checked
                 ? clients.OrderBy(c => c.ClientName).ToList()
-                : clients.ToList(); 
+                : clients.ToList();
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("Client Records");
-            
+
             foreach (var c in listToPrint)
             {
                 sb.AppendLine($"ID: {c.ClientID}");
@@ -216,7 +216,7 @@ namespace WinFormsApp1
                 ev.Graphics.DrawString(sb.ToString(), new Font("Arial", 12), Brushes.Black, new PointF(100, 100));
             };
 
-            
+
             PrintPreviewDialog preview = new PrintPreviewDialog
             {
                 Document = pd,
@@ -228,15 +228,104 @@ namespace WinFormsApp1
 
         private void intOnly_KeyPress(object sender, KeyPressEventArgs e)
         {
-            
+
             if (char.IsControl(e.KeyChar))
                 return;
-            
+
             if (!char.IsDigit(e.KeyChar))
             {
-                e.Handled = true; 
+                e.Handled = true;
             }
         }
+
+        private string serializeToTxt(IEnumerable<Client> list) =>
+        string.Join(Environment.NewLine,
+        list.Select(c => $"{c.ClientID},{c.ClientName},{c.ClientAddress},{c.ClientPhone},{c.ClientCategory}"));
+
+        private BindingList<Client> deserializeFromCsv(string csv) =>
+            new BindingList<Client>(
+                csv.Split(Environment.NewLine)
+                   .Select(l => l.Split(','))
+                   .Where(p => p.Length == 5)
+                   .Select(p => new Client
+                   {
+                       ClientID = p[0],
+                       ClientName = p[1],
+                       ClientAddress = p[2],
+                       ClientPhone = p[3],
+                       ClientCategory = p[4]
+                   }).ToList());
+
+        private string saveToTxt(IEnumerable<Client> list) =>
+        string.Join(Environment.NewLine,
+        list.Select(c => $"{c.ClientID}|{c.ClientName}|{c.ClientAddress}|{c.ClientPhone}|{c.ClientCategory}"));
+
+        private BindingList<Client> DeserializeFromTxt(string txt) =>
+            new BindingList<Client>(
+                txt.Split(Environment.NewLine)
+                   .Select(line => line.Split('|'))
+                   .Where(p => p.Length == 5)
+                   .Select(p => new Client
+                   {
+                       ClientID = p[0],
+                       ClientName = p[1],
+                       ClientAddress = p[2],
+                       ClientPhone = p[3],
+                       ClientCategory = p[4]
+                   }).ToList());
+
+
+
+        private void saveClients()
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "CSV Files (*.csv)|*.csv|TXT Files (*.txt)|*txt",
+                Title = "Save Clients"
+            };
+
+            if (saveFileDialog.ShowDialog() != DialogResult.OK)
+                return;
+            string extension = Path.GetExtension(saveFileDialog.FileName).ToLower();
+            string content = extension switch
+            {
+                ".csv" => saveToTxt(clients),
+                ".txt" => saveToTxt(clients),
+                _ => throw new Exception("Unsupported format")
+            };
+
+
+        }
+
+        private void loadClients()
+        {
+            OpenFileDialog ofd = new OpenFileDialog
+            {
+                Filter = "All Supported|*.json;*.csv;*.txt;*.xml"
+            };
+
+            if (ofd.ShowDialog() != DialogResult.OK)
+                return;
+
+            string encrypted = File.ReadAllText(ofd.FileName);
+            string decrypted = encryptionClass.DecryptString(encrypted);
+
+            string extension = Path.GetExtension(ofd.FileName).ToLower();
+
+            BindingList<Client> loaded = extension switch
+            {
+
+                ".csv" => deserializeFromCsv(decrypted),
+                ".txt" => DeserializeFromTxt(decrypted),
+                _ => throw new Exception("Unsupported format")
+            };
+
+            clients = loaded ?? new BindingList<Client>();
+            dgvClients.DataSource = clients;
+
+            MessageBox.Show("File loaded and decrypted successfully.");
+        }
+
 
 
         // Clears the textboxes and resets selection
@@ -252,6 +341,13 @@ namespace WinFormsApp1
             cmbCategory.SelectedIndex = 0;
         }
 
-        
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            loadClients();
+        }
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            saveClients();
+        }
     }
 }

@@ -8,7 +8,7 @@ namespace WinFormsApp1
     partial class AdminForm
     {
         private System.ComponentModel.IContainer components = null;
-        
+
         private void InitializeComponent()
         {
             btnBack = new Button();
@@ -31,6 +31,8 @@ namespace WinFormsApp1
             chkSortByName = new CheckBox();
             cmbCategory = new ComboBox();
             lblCategory = new Label();
+            btnSave = new Button();
+            btnLoad = new Button();
             ((ISupportInitialize)dgvClients).BeginInit();
             SuspendLayout();
             // 
@@ -209,9 +211,31 @@ namespace WinFormsApp1
             lblCategory.TabIndex = 14;
             lblCategory.Text = "Client Category";
             // 
+            // btnSave
+            // 
+            btnSave.Location = new Point(1114, 411);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new Size(112, 34);
+            btnSave.TabIndex = 15;
+            btnSave.Text = "Save";
+            btnSave.UseVisualStyleBackColor = true;
+            btnSave.Click += btnSave_Click;
+            // 
+            // btnLoad
+            // 
+            btnLoad.Location = new Point(1114, 463);
+            btnLoad.Name = "btnLoad";
+            btnLoad.Size = new Size(112, 34);
+            btnLoad.TabIndex = 16;
+            btnLoad.Text = "Load";
+            btnLoad.UseVisualStyleBackColor = true;
+            btnLoad.Click += btnLoad_Click;
+            // 
             // AdminForm
             // 
             ClientSize = new Size(1540, 621);
+            Controls.Add(btnLoad);
+            Controls.Add(btnSave);
             Controls.Add(lblCategory);
             Controls.Add(cmbCategory);
             Controls.Add(chkSortByName);
@@ -267,6 +291,8 @@ namespace WinFormsApp1
         private CheckBox chkSortByName;
         private ComboBox cmbCategory;
         private Label lblCategory;
+        private Button btnSave;
+        private Button btnLoad;
     }
 
 }
