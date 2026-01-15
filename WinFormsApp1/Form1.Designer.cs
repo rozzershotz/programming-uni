@@ -23,51 +23,52 @@
             // lblTitle
             // 
             lblTitle.AutoSize = true;
-            lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            lblTitle.Location = new System.Drawing.Point(300, 30);
+            lblTitle.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            lblTitle.Location = new Point(300, 30);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new System.Drawing.Size(150, 30);
+            lblTitle.Size = new Size(172, 45);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "CRS Login";
             // 
             // lblUsername
             // 
             lblUsername.AutoSize = true;
-            lblUsername.Location = new System.Drawing.Point(200, 100);
+            lblUsername.Location = new Point(200, 100);
             lblUsername.Name = "lblUsername";
-            lblUsername.Size = new System.Drawing.Size(75, 23);
+            lblUsername.Size = new Size(91, 25);
             lblUsername.TabIndex = 1;
             lblUsername.Text = "Username";
-            // 
-            // txtUsername
-            // 
-            txtUsername.Location = new System.Drawing.Point(300, 100);
-            txtUsername.Name = "txtUsername";
-            txtUsername.Size = new System.Drawing.Size(150, 31);
-            txtUsername.TabIndex = 2;
             // 
             // lblPassword
             // 
             lblPassword.AutoSize = true;
-            lblPassword.Location = new System.Drawing.Point(200, 150);
+            lblPassword.Location = new Point(200, 150);
             lblPassword.Name = "lblPassword";
-            lblPassword.Size = new System.Drawing.Size(70, 23);
+            lblPassword.Size = new Size(87, 25);
             lblPassword.TabIndex = 3;
             lblPassword.Text = "Password";
             // 
+            // txtUsername
+            // 
+            txtUsername.Location = new Point(300, 100);
+            txtUsername.Name = "txtUsername";
+            txtUsername.Size = new Size(150, 31);
+            txtUsername.TabIndex = 2;
+            // 
             // txtPassword
             // 
-            txtPassword.Location = new System.Drawing.Point(300, 150);
+            txtPassword.Location = new Point(300, 150);
             txtPassword.Name = "txtPassword";
-            txtPassword.Size = new System.Drawing.Size(150, 31);
-            txtPassword.TabIndex = 4;
             txtPassword.PasswordChar = '*';
+            txtPassword.Size = new Size(150, 31);
+            txtPassword.TabIndex = 4;
+            
             // 
             // btnLogin
             // 
-            btnLogin.Location = new System.Drawing.Point(300, 200);
+            btnLogin.Location = new Point(300, 200);
             btnLogin.Name = "btnLogin";
-            btnLogin.Size = new System.Drawing.Size(150, 35);
+            btnLogin.Size = new Size(150, 35);
             btnLogin.TabIndex = 5;
             btnLogin.Text = "Login";
             btnLogin.UseVisualStyleBackColor = true;
@@ -75,7 +76,7 @@
             // 
             // Form1
             // 
-            ClientSize = new System.Drawing.Size(800, 450);
+            ClientSize = new Size(800, 450);
             Controls.Add(lblTitle);
             Controls.Add(lblUsername);
             Controls.Add(txtUsername);

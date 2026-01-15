@@ -12,6 +12,7 @@ namespace WinFormsApp1
         public string ClientName { get; set; }
         public string ClientAddress { get; set; }
         public string ClientPhone { get; set; }
-        
+        public string ClientCategory { get; set; }
+
     }
 }

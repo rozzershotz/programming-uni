@@ -8,24 +8,6 @@ namespace WinFormsApp1
     partial class UserForm
     {
         private System.ComponentModel.IContainer components = null;
-        private Button btnBack;
-        private Label labelTitle;
-        private DataGridView dgvClients;
-        private TextBox txtClientAddress;
-        private TextBox txtClientID;
-        private TextBox txtClientName;
-        private TextBox txtClientPhone;
-        private Label lblClientID;
-        private Label lblClientName;
-        private Label lblClientAddress;
-        private Label lblClientPhone;
-        private Button btnAddClient;
-        private Button btnEditClient;
-        private Button btnDeleteClient;
-        private TextBox txtSearch;
-        private Button btnSearch;
-        private Button btnPrint;
-        private CheckBox chkSortByName;
 
         private void InitializeComponent()
         {
@@ -45,12 +27,14 @@ namespace WinFormsApp1
             btnSearch = new Button();
             btnPrint = new Button();
             chkSortByName = new CheckBox();
+            cmbCategory = new ComboBox();
+            lblCategory = new Label();
             ((ISupportInitialize)dgvClients).BeginInit();
             SuspendLayout();
             // 
             // btnBack
             // 
-            btnBack.Location = new Point(0, 403);
+            btnBack.Location = new Point(12, 604);
             btnBack.Name = "btnBack";
             btnBack.Size = new Size(75, 31);
             btnBack.TabIndex = 1;
@@ -63,50 +47,52 @@ namespace WinFormsApp1
             labelTitle.AutoSize = true;
             labelTitle.Location = new Point(10, 10);
             labelTitle.Name = "labelTitle";
-            labelTitle.Size = new Size(47, 25);
+            labelTitle.Size = new Size(48, 25);
             labelTitle.TabIndex = 0;
             labelTitle.Text = "Staff";
             // 
             // dgvClients
             // 
             dgvClients.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvClients.Location = new Point(10, 287);
+            dgvClients.Location = new Point(10, 362);
             dgvClients.Name = "dgvClients";
             dgvClients.RowHeadersWidth = 62;
-            dgvClients.Size = new Size(761, 110);
+            dgvClients.Size = new Size(1108, 236);
             dgvClients.TabIndex = 4;
             // 
             // txtClientAddress
             // 
-            txtClientAddress.Location = new Point(12, 175);
+            txtClientAddress.Location = new Point(12, 256);
             txtClientAddress.Name = "txtClientAddress";
             txtClientAddress.Size = new Size(150, 31);
             txtClientAddress.TabIndex = 8;
             // 
             // txtClientID
             // 
-            txtClientID.Location = new Point(12, 61);
+            txtClientID.Location = new Point(10, 136);
             txtClientID.Name = "txtClientID";
             txtClientID.Size = new Size(150, 31);
             txtClientID.TabIndex = 7;
+            txtClientID.KeyPress += intOnly_KeyPress;
             // 
             // txtClientName
             // 
-            txtClientName.Location = new Point(12, 117);
+            txtClientName.Location = new Point(10, 196);
             txtClientName.Name = "txtClientName";
             txtClientName.Size = new Size(150, 31);
             txtClientName.TabIndex = 6;
             // 
             // txtClientPhone
             // 
-            txtClientPhone.Location = new Point(12, 237);
+            txtClientPhone.Location = new Point(10, 316);
             txtClientPhone.Name = "txtClientPhone";
             txtClientPhone.Size = new Size(150, 31);
             txtClientPhone.TabIndex = 5;
+            txtClientPhone.KeyPress += intOnly_KeyPress;
             // 
             // lblClientID
             // 
-            lblClientID.Location = new Point(49, 35);
+            lblClientID.Location = new Point(20, 110);
             lblClientID.Name = "lblClientID";
             lblClientID.Size = new Size(100, 23);
             lblClientID.TabIndex = 4;
@@ -114,7 +100,7 @@ namespace WinFormsApp1
             // 
             // lblClientName
             // 
-            lblClientName.Location = new Point(49, 95);
+            lblClientName.Location = new Point(20, 170);
             lblClientName.Name = "lblClientName";
             lblClientName.Size = new Size(130, 23);
             lblClientName.TabIndex = 3;
@@ -122,7 +108,7 @@ namespace WinFormsApp1
             // 
             // lblClientAddress
             // 
-            lblClientAddress.Location = new Point(49, 151);
+            lblClientAddress.Location = new Point(20, 230);
             lblClientAddress.Name = "lblClientAddress";
             lblClientAddress.Size = new Size(130, 23);
             lblClientAddress.TabIndex = 2;
@@ -130,7 +116,7 @@ namespace WinFormsApp1
             // 
             // lblClientPhone
             // 
-            lblClientPhone.Location = new Point(49, 209);
+            lblClientPhone.Location = new Point(20, 290);
             lblClientPhone.Name = "lblClientPhone";
             lblClientPhone.Size = new Size(142, 23);
             lblClientPhone.TabIndex = 1;
@@ -138,7 +124,7 @@ namespace WinFormsApp1
             // 
             // btnAddClient
             // 
-            btnAddClient.Location = new Point(191, 235);
+            btnAddClient.Location = new Point(195, 313);
             btnAddClient.Name = "btnAddClient";
             btnAddClient.Size = new Size(112, 34);
             btnAddClient.TabIndex = 0;
@@ -148,7 +134,7 @@ namespace WinFormsApp1
             // 
             // txtSearch
             // 
-            txtSearch.Location = new Point(682, 187);
+            txtSearch.Location = new Point(507, 315);
             txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(150, 31);
             txtSearch.TabIndex = 9;
@@ -156,7 +142,7 @@ namespace WinFormsApp1
             // 
             // btnSearch
             // 
-            btnSearch.Location = new Point(720, 234);
+            btnSearch.Location = new Point(389, 313);
             btnSearch.Name = "btnSearch";
             btnSearch.Size = new Size(112, 34);
             btnSearch.TabIndex = 10;
@@ -166,7 +152,7 @@ namespace WinFormsApp1
             // 
             // btnPrint
             // 
-            btnPrint.Location = new Point(422, 56);
+            btnPrint.Location = new Point(1136, 564);
             btnPrint.Name = "btnPrint";
             btnPrint.Size = new Size(112, 34);
             btnPrint.TabIndex = 11;
@@ -177,16 +163,35 @@ namespace WinFormsApp1
             // chkSortByName
             // 
             chkSortByName.AutoSize = true;
-            chkSortByName.Location = new Point(540, 61);
+            chkSortByName.Location = new Point(1254, 569);
             chkSortByName.Name = "chkSortByName";
             chkSortByName.Size = new Size(145, 29);
             chkSortByName.TabIndex = 12;
             chkSortByName.Text = "Sort by name";
             chkSortByName.UseVisualStyleBackColor = true;
             // 
+            // cmbCategory
+            // 
+            cmbCategory.FormattingEnabled = true;
+            cmbCategory.Location = new Point(10, 74);
+            cmbCategory.Name = "cmbCategory";
+            cmbCategory.Size = new Size(182, 33);
+            cmbCategory.TabIndex = 13;
+            // 
+            // lblCategory
+            // 
+            lblCategory.AutoSize = true;
+            lblCategory.Location = new Point(12, 46);
+            lblCategory.Name = "lblCategory";
+            lblCategory.Size = new Size(133, 25);
+            lblCategory.TabIndex = 14;
+            lblCategory.Text = "Client Category";
+            // 
             // UserForm
             // 
-            ClientSize = new Size(1023, 431);
+            ClientSize = new Size(1607, 647);
+            Controls.Add(lblCategory);
+            Controls.Add(cmbCategory);
             Controls.Add(chkSortByName);
             Controls.Add(btnPrint);
             Controls.Add(btnAddClient);
@@ -209,6 +214,25 @@ namespace WinFormsApp1
             ResumeLayout(false);
             PerformLayout();
         }
-        
+        private Button btnBack;
+        private Label labelTitle;
+        private DataGridView dgvClients;
+        private TextBox txtClientAddress;
+        private TextBox txtClientID;
+        private TextBox txtClientName;
+        private TextBox txtClientPhone;
+        private Label lblClientID;
+        private Label lblClientName;
+        private Label lblClientAddress;
+        private Label lblClientPhone;
+        private Button btnAddClient;
+        private Button btnEditClient;
+        private Button btnDeleteClient;
+        private TextBox txtSearch;
+        private Button btnSearch;
+        private Button btnPrint;
+        private CheckBox chkSortByName;
+        private ComboBox cmbCategory;
+        private Label lblCategory;
     }
 }

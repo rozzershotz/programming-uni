@@ -17,13 +17,16 @@ namespace WinFormsApp1
         private string currentRole;
 
         // Path to clients.json
-        private string dataFile = Path.Combine(
+        private string clientDataFile = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
             "clients.json");
 
         public AdminForm(string role)
         {
             InitializeComponent();
+
+            cmbCategory.Items.AddRange(new string[] { "Software", "Laptops and Pcs", "Office tools", "Accessories", "Games" });
+            cmbCategory.SelectedIndex = 0;
 
             currentRole = role;
 
@@ -38,6 +41,7 @@ namespace WinFormsApp1
             ApplyRolePermissions();
         }
 
+        
         private void ApplyRolePermissions()
         {
             if (currentRole == "Staff")
@@ -52,7 +56,7 @@ namespace WinFormsApp1
             try
             {
                 string json = JsonSerializer.Serialize(clients);
-                File.WriteAllText(dataFile, json);
+                File.WriteAllText(clientDataFile, json);
             }
             catch (Exception ex)
             {
@@ -65,9 +69,9 @@ namespace WinFormsApp1
         {
             try
             {
-                if (File.Exists(dataFile))
+                if (File.Exists(clientDataFile))
                 {
-                    string json = File.ReadAllText(dataFile);
+                    string json = File.ReadAllText(clientDataFile);
                     var loadedClients = JsonSerializer.Deserialize<BindingList<Client>>(json);
                     if (loadedClients != null)
                     {
@@ -137,12 +141,14 @@ namespace WinFormsApp1
                 ClientID = txtClientID.Text,
                 ClientName = txtClientName.Text,
                 ClientAddress = txtClientAddress.Text,
-                ClientPhone = txtClientPhone.Text
+                ClientPhone = txtClientPhone.Text,
+                ClientCategory = cmbCategory.SelectedItem.ToString()
+
             };
 
             clients.Add(client);
             SaveClientsToFile();
-            ClearTextboxes();
+            ResetClientForm();
             MessageBox.Show("Client record added successfully!");
         }
 
@@ -157,6 +163,7 @@ namespace WinFormsApp1
             txtClientName.Text = selectedClient.ClientName;
             txtClientAddress.Text = selectedClient.ClientAddress;
             txtClientPhone.Text = selectedClient.ClientPhone;
+            cmbCategory.SelectedItem = selectedClient.ClientCategory;
         }
         // Creates functionality for Edit Client button to edit selected client records
         private void btnEditClient_Click(object sender, EventArgs e)
@@ -195,7 +202,7 @@ namespace WinFormsApp1
             {
                 clients.Remove(selectedClient);
                 selectedClient = null;
-                ClearTextboxes();
+                ResetClientForm();
                 SaveClientsToFile();
                 MessageBox.Show("Client deleted successfully!");
                 dgvClients.Refresh();
@@ -206,7 +213,7 @@ namespace WinFormsApp1
 
 
         // Clears the textboxes after adding, editing, or deleting a client
-        private void ClearTextboxes()
+        private void ResetClientForm()
         {
             txtClientID.Clear();
             txtClientName.Clear();
@@ -215,6 +222,7 @@ namespace WinFormsApp1
             dgvClients.ClearSelection();
             selectedClient = null;
             txtClientID.Focus();
+            cmbCategory.SelectedIndex = 0;
         }
 
         //Functionality for when the text in the search box is changed to filter client records
@@ -236,6 +244,18 @@ namespace WinFormsApp1
             dgvClients.DataSource = clients;
         }
 
+        private void intOnly_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+            if (char.IsControl(e.KeyChar))
+                return;
+
+            if (!char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
         //Functionality for the print button allowing a sheet of client records
         private void btnPrint_Click(object sender, EventArgs e)
         {
@@ -251,7 +271,7 @@ namespace WinFormsApp1
                 : clients.ToList();
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("Client Records");
+            sb.AppendLine("Client List");
             
             foreach (var c in listToPrint)
             {

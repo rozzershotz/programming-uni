@@ -16,6 +16,9 @@ namespace WinFormsApp1
         {
             InitializeComponent();
 
+            cmbCategory.Items.AddRange(new string[] { "Software", "Laptops and Pcs", "Office tools", "Accessories", "Games" });
+            cmbCategory.SelectedIndex = 0;
+
             dgvClients.AutoGenerateColumns = true;
             dgvClients.AllowUserToAddRows = false;
             dgvClients.DataSource = clients;
@@ -29,7 +32,7 @@ namespace WinFormsApp1
         private Client selectedClient = null;
 
         // File path to store client data
-        private string dataFile = Path.Combine(
+        private string clientDataFile = Path.Combine(
     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
     "clients.json");
 
@@ -44,7 +47,7 @@ namespace WinFormsApp1
             try
             {
                 string json = JsonSerializer.Serialize(clients);
-                File.WriteAllText(dataFile, json);
+                File.WriteAllText(clientDataFile, json);
             }
             catch (Exception ex)
             {
@@ -57,9 +60,9 @@ namespace WinFormsApp1
         {
             try
             {
-                if (File.Exists(dataFile))
+                if (File.Exists(clientDataFile))
                 {
-                    string json = File.ReadAllText(dataFile);
+                    string json = File.ReadAllText(clientDataFile);
                     var loadedClients = JsonSerializer.Deserialize<BindingList<Client>>(json);
                     if (loadedClients != null)
                     {
@@ -130,14 +133,15 @@ namespace WinFormsApp1
                 ClientID = txtClientID.Text,
                 ClientName = txtClientName.Text,
                 ClientAddress = txtClientAddress.Text,
-                ClientPhone = txtClientPhone.Text
+                ClientPhone = txtClientPhone.Text,
+                ClientCategory = cmbCategory.SelectedItem.ToString()
             };
 
             
 
             clients.Add(client);
             SaveClientsToFile(); 
-            ClearTextboxes();
+            ResetClientForm();
             MessageBox.Show("Client record added successfully!");
         }
 
@@ -160,6 +164,7 @@ namespace WinFormsApp1
             txtClientName.Text = selectedClient.ClientName;
             txtClientAddress.Text = selectedClient.ClientAddress;
             txtClientPhone.Text = selectedClient.ClientPhone;
+            cmbCategory.SelectedItem = selectedClient.ClientCategory;
         }
 
         //Functionality for when the text in the search box is changed to filter client records
@@ -221,11 +226,21 @@ namespace WinFormsApp1
             preview.ShowDialog();
         }
 
-
+        private void intOnly_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            
+            if (char.IsControl(e.KeyChar))
+                return;
+            
+            if (!char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; 
+            }
+        }
 
 
         // Clears the textboxes and resets selection
-        private void ClearTextboxes()
+        private void ResetClientForm()
         {
             txtClientID.Clear();
             txtClientName.Clear();
@@ -234,6 +249,7 @@ namespace WinFormsApp1
             dgvClients.ClearSelection();
             selectedClient = null;
             txtClientID.Focus();
+            cmbCategory.SelectedIndex = 0;
         }
 
         
