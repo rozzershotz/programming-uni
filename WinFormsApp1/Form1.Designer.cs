@@ -95,7 +95,6 @@
             btnRegister.Size = new System.Drawing.Size(150, 35);
             btnRegister.Click += btnRegister_Click;
 
-            // ---- ADD CONTROLS ----
             Controls.Add(lblTitle);
             Controls.Add(lblUsername);
             Controls.Add(txtUsername);
